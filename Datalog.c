@@ -1,7 +1,6 @@
 // ConsoleApplication1.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -181,29 +180,4 @@ static uint32_t count_bytes(char data[])
 
 	return bytesCount;
 }
-
-
-
-
-//int _tmain(int argc, _TCHAR* argv[])
-//{
-//	Datalog_t myLog;
-//	datalog_init(&myLog);
-//
-//	datalog_add_record(&myLog, "String one.");
-//	datalog_add_record(&myLog, "String two.");
-//	datalog_add_record(&myLog, "String three.");
-//	const char *resultString  = datalog_get_record(&myLog, 1);
-//
-//	uint32_t dataLength = count_bytes(myLog.data);
-//
-//	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
-//
-//	for (int i = 0; i < myLog.numRecords; i++)
-//		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
-//
-//
-//	while(1);
-//	return 0;
-//}
 
