@@ -11,6 +11,20 @@
 
 #include "Datalog.h"
 
+
+
+struct Datalog_t
+{
+	char *indeces[DATALOG_MAX_RECORDS];
+
+	char data[DATALOG_MAX_BYTES];
+
+	uint32_t numRecords;
+
+	uint32_t usedBytes;
+
+};
+
 // Private Functions
 static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes);
 
@@ -18,6 +32,28 @@ static bool datalog_is_max_records_used(Datalog_t * log);
 
 static uint32_t count_bytes(char data[]);
 
+
+int main()
+{
+		Datalog_t myLog;
+	datalog_init(&myLog);
+
+	datalog_add_record(&myLog, "String one.");
+	datalog_add_record(&myLog, "String two.");
+	datalog_add_record(&myLog, "String three.");
+	const char *resultString  = datalog_get_record(&myLog, 1);
+
+	uint32_t dataLength = count_bytes(myLog.data);
+
+	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
+
+	for (int i = 0; i < myLog.numRecords; i++)
+		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
+
+
+	while(1);
+	return 0;
+}
 
 void datalog_init(Datalog_t * log)
 {
@@ -149,25 +185,25 @@ static uint32_t count_bytes(char data[])
 
 
 
-int _tmain(int argc, _TCHAR* argv[])
-{
-	Datalog_t myLog;
-	datalog_init(&myLog);
-
-	datalog_add_record(&myLog, "String one.");
-	datalog_add_record(&myLog, "String two.");
-	datalog_add_record(&myLog, "String three.");
-	const char *resultString  = datalog_get_record(&myLog, 1);
-
-	uint32_t dataLength = count_bytes(myLog.data);
-
-	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
-
-	for (int i = 0; i < myLog.numRecords; i++)
-		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
-
-
-	while(1);
-	return 0;
-}
+//int _tmain(int argc, _TCHAR* argv[])
+//{
+//	Datalog_t myLog;
+//	datalog_init(&myLog);
+//
+//	datalog_add_record(&myLog, "String one.");
+//	datalog_add_record(&myLog, "String two.");
+//	datalog_add_record(&myLog, "String three.");
+//	const char *resultString  = datalog_get_record(&myLog, 1);
+//
+//	uint32_t dataLength = count_bytes(myLog.data);
+//
+//	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
+//
+//	for (int i = 0; i < myLog.numRecords; i++)
+//		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
+//
+//
+//	while(1);
+//	return 0;
+//}
 
