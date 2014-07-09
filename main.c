@@ -14,7 +14,7 @@ int main()
 	datalog_add_record(&myLog, "String two.");
 	datalog_add_record(&myLog, "String three.");
 
-	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
+	datalog_insert_record(&myLog, 2, "This is an inserted record.");
 
 	uint32_t i;
 	for (i = 0; i < myLog.numRecords; i++)
