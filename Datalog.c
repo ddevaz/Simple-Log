@@ -67,14 +67,22 @@ void datalog_add_record(Datalog_t * log, const char * record)
 }
 
 
+void datalog_delete_record(Datalog_t * log, const uint32_t recordIndex)
+{
+	assert("Record Index out of bounds" && recordIndex > log->numRecords);
+}
+
+
 void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 {
 	uint32_t numRecords = log->numRecords;
 	uint32_t recordLength = strlen(record) + 1;
 
 	// perform checks.
-	assert ( "Adding record would exceed free space or max num records." &&
-			  datalog_has_free_bytes(log, recordIndex) && !datalog_is_max_records_used(log) );
+	assert( "Adding record must not exceed free space."
+               && datalog_has_free_bytes(log, recordIndex) );
+        assert( "Adding record must not exceed max number of records"
+               && !datalog_is_max_records_used(log) );
 
 	// inserting a record at the end is the
 	// same as adding a record.

@@ -25,6 +25,8 @@ const char * datalog_get_record(Datalog_t * log, uint32_t recordIndex);
 
 void         datalog_add_record(Datalog_t * log, const char * record);
 
+void         datalog_delete_record(Datalog_t log, const uint32_t recordIndex); // stub
+
 void         datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[]);
 
 uint32_t     datalog_get_num_free_bytes(Datalog_t * log);
