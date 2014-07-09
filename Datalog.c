@@ -12,18 +12,6 @@
 
 
 
-struct Datalog_t
-{
-	char *indeces[DATALOG_MAX_RECORDS];
-
-	char data[DATALOG_MAX_BYTES];
-
-	uint32_t numRecords;
-
-	uint32_t usedBytes;
-
-};
-
 // Private Functions
 static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes);
 
@@ -46,7 +34,7 @@ int main()
 
 	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
 
-	for (int i = 0; i < myLog.numRecords; i++)
+	for (uint32_t i = 0; i < myLog.numRecords; i++)
 		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
 
 
@@ -117,7 +105,7 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	memmove(log->indeces[recordIndex] + recordLength, log->indeces[recordIndex],  bytesUsedFromIndex);
 	memcpy(log->indeces[recordIndex], record, recordLength);
 
-	for (int i = recordIndex+1; i < log->numRecords+1; i++)
+	for (uint32_t i = recordIndex+1; i < log->numRecords+1; i++)
 	{
 		log->indeces[i] = log->indeces[i-1] + strlen(log->indeces[i-1])+1;
 	}

@@ -1,9 +1,21 @@
+#include <stdbool.h>
+
 
 #define DATALOG_MAX_BYTES	10000L
 
 #define	DATALOG_MAX_RECORDS	10000L
 
-typedef struct Datalog_t;
+typedef struct
+{
+	char *indeces[DATALOG_MAX_RECORDS];
+
+	char data[DATALOG_MAX_BYTES];
+
+	uint32_t numRecords;
+
+	uint32_t usedBytes;
+
+} Datalog_t;
 
 
 void datalog_init(Datalog_t * log);
