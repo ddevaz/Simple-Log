@@ -1,4 +1,4 @@
-TARGET = app
+TARGET = app.bin
 LIBS = -lm
 CC = gcc
 CFLAGS = -g -Wall
