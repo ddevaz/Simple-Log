@@ -19,9 +19,9 @@ void datalog_init(Datalog_t * log);
 
 const char * datalog_get_record(Datalog_t * log, uint32_t recordIndex);
 
-bool datalog_add_record(Datalog_t * log, const char * record);
+void datalog_add_record(Datalog_t * log, const char * record);
 
-bool datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[]);
+void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[]);
 
 uint32_t datalog_get_num_free_bytes(Datalog_t * log);
 

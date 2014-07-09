@@ -14,7 +14,7 @@
 // Private Functions
 static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes);
 
-static bool datalog_max_records_used(Datalog_t * log);
+static bool datalog_is_max_records_used(Datalog_t * log);
 
 static uint32_t count_bytes(char data[]);
 
@@ -32,20 +32,18 @@ void datalog_init(Datalog_t * log)
 const char * datalog_get_record(Datalog_t * log, uint32_t recordIndex)
 {
 	uint32_t length = strlen(log->indeces[recordIndex]) + 1;
-	assert(( "record index out of bounds.", recordIndex < log->numRecords && 0 ));
+	assert(( "record index out of bounds.", recordIndex < log->numRecords ));
 	return log->indeces[recordIndex];
 };
 
 
-bool datalog_add_record(Datalog_t * log, const char * record)
+void datalog_add_record(Datalog_t * log, const char * record)
 {
 	uint32_t charCount = strlen(record) + 1;
 
 	// perform checks.
-	if ( !datalog_has_free_bytes(log, charCount) || datalog_max_records_used(log) )  
-	{
-		return false;
-	}
+	assert (( "Adding record would exceed free space or max num records.", 
+			  datalog_has_free_bytes(log, charCount) && !datalog_is_max_records_used(log) ));
 
 	// make the index point to the correct string.
 	if (log->numRecords > 0) 
@@ -59,28 +57,24 @@ bool datalog_add_record(Datalog_t * log, const char * record)
 	// update state of datalog.
 	log->numRecords += 1;
 	log->usedBytes += charCount;
-
-	return true;
 }
 
 
-bool datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
+void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 {
 	uint32_t numRecords = log->numRecords;
 	uint32_t recordLength = strlen(record) + 1;
 
 	// perform checks.
-	if ( !datalog_has_free_bytes(log, recordLength) || datalog_max_records_used(log) )  
-	{
-		return false;
-	}
+	assert (( "Adding record would exceed free space or max num records.", 
+			  datalog_has_free_bytes(log, recordIndex) && !datalog_is_max_records_used(log) ));
 
 	// inserting a record at the end is the
 	// same as adding a record.
 	if (recordIndex == numRecords) 
 	{
 			datalog_add_record(log, record);
-			return true;
+			return;
 	}
 
 	
@@ -95,8 +89,6 @@ bool datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 
 	log->numRecords += 1;
 	log->usedBytes += 1;
-
-	return true;
 }
 
 
@@ -124,7 +116,7 @@ static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes)
 	return true;
 }
 
-static bool datalog_max_records_used(Datalog_t * log)
+static bool datalog_is_max_records_used(Datalog_t * log)
 {
 	if (log->numRecords >= DATALOG_MAX_RECORDS) 
 	{
