@@ -19,29 +19,6 @@ static bool datalog_is_max_records_used(Datalog_t * log);
 
 static uint32_t count_bytes(char data[]);
 
-
-int main()
-{
-		Datalog_t myLog;
-	datalog_init(&myLog);
-
-	datalog_add_record(&myLog, "String one.");
-	datalog_add_record(&myLog, "String two.");
-	datalog_add_record(&myLog, "String three.");
-	const char *resultString  = datalog_get_record(&myLog, 1);
-
-	uint32_t dataLength = count_bytes(myLog.data);
-
-	datalog_insert_record(&myLog, 2, "This is an inserted record. Long string.");
-
-	for (uint32_t i = 0; i < myLog.numRecords; i++)
-		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
-
-
-	while(1);
-	return 0;
-}
-
 void datalog_init(Datalog_t * log)
 {
 	assert(( "datalog can't be NULL.", log != NULL ));
@@ -105,7 +82,8 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	memmove(log->indeces[recordIndex] + recordLength, log->indeces[recordIndex],  bytesUsedFromIndex);
 	memcpy(log->indeces[recordIndex], record, recordLength);
 
-	for (uint32_t i = recordIndex+1; i < log->numRecords+1; i++)
+	uint32_t i;
+	for (i = recordIndex+1; i < log->numRecords+1; i++)
 	{
 		log->indeces[i] = log->indeces[i-1] + strlen(log->indeces[i-1])+1;
 	}
