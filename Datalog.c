@@ -154,13 +154,5 @@ static uint32_t count_bytes(char data[])
 	return bytesCount;
 }
 
-static uint32_t count_bytes(const Datalog_t log, recordIndex)
-{
-	assert("Record Index out of bounds" && recordIndex < log->numRecords);
-        char *dataEndIndex = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords-1]) + 1;
-        char *dataStartIndex = log->indeces[recordIndex];
-        return (dataEndIndex - dataStartIndex)
-
-}
 
 

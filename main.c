@@ -13,11 +13,6 @@ int main()
 	datalog_add_record(&myLog, "string two");
 	datalog_add_record(&myLog, "string four");
 
-	int j;
-        for (j=0; j < myLog.usedBytes; j++)
-        {
-                printf("j:%d : %X\n", j, myLog.data[j]);
-        }
 
 
 	datalog_insert_record(&myLog, 2, "string three");
@@ -26,11 +21,6 @@ int main()
 	for (i = 0; i < myLog.numRecords; i++)
 		printf("index:%d string:%s\n", i, datalog_get_record(&myLog, i));
 
-	for (j=0; j < myLog.usedBytes; j++)
-	{
-		printf("j:%d : %X\n", j, myLog.data[j]);
-	}
-	datalog_delete_record(&myLog, 1);
 	return 0;
 }
 
