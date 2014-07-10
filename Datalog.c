@@ -55,7 +55,7 @@ void datalog_add_record(Datalog_t * log, const char * record)
 	// make the index point to the correct string.
 	if (log->numRecords > 0)
 	{
-		log->indeces[log->numRecords] = log->indeces[log->numRecords - 1] + charCount;
+		log->indeces[log->numRecords] = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords - 1]) + 1;
 	}
 
 	// perform the copy of the new record.
