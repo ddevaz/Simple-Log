@@ -16,7 +16,7 @@
 // library includes
 #include "Datalog.h"
 
-
+#include <stdio.h>
 
 // Private Prototypes
 static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes);
@@ -55,7 +55,7 @@ void datalog_add_record(Datalog_t * log, const char * record)
 	// make the index point to the correct string.
 	if (log->numRecords > 0)
 	{
-		log->indeces[log->numRecords] = log->indeces[log->numRecords - 1] + charCount;
+		log->indeces[log->numRecords] = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords - 1]) + 1;
 	}
 
 	// perform the copy of the new record.
@@ -67,14 +67,27 @@ void datalog_add_record(Datalog_t * log, const char * record)
 }
 
 
+void datalog_delete_record(Datalog_t * log, const uint32_t recordIndex)
+{
+	assert("Record Index out of bounds" && recordIndex < log->numRecords);
+	char *dataEndIndex = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords-1]) + 1;
+	char *dataStartIndex = log->indeces[recordIndex];
+	uint32_t  numberOfBytesToMove = dataEndIndex - dataStartIndex;
+	printf("number of bytes to move: %u\n countbytes:%u\n", numberOfBytesToMove, count_bytes(log->indeces[recordIndex]));
+
+}
+
+
 void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 {
 	uint32_t numRecords = log->numRecords;
 	uint32_t recordLength = strlen(record) + 1;
 
 	// perform checks.
-	assert ( "Adding record would exceed free space or max num records." &&
-			  datalog_has_free_bytes(log, recordIndex) && !datalog_is_max_records_used(log) );
+	assert( "Adding record must not exceed free space."
+               && datalog_has_free_bytes(log, recordIndex) );
+        assert( "Adding record must not exceed max number of records"
+               && !datalog_is_max_records_used(log) );
 
 	// inserting a record at the end is the
 	// same as adding a record.
@@ -140,5 +153,6 @@ static uint32_t count_bytes(char data[])
 
 	return bytesCount;
 }
+
 
 

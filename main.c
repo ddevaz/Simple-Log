@@ -9,11 +9,11 @@ int main()
 	Datalog_t myLog;
 	datalog_init(&myLog);
 
-	datalog_add_record(&myLog, "String one.");
-	datalog_add_record(&myLog, "String two.");
-	datalog_add_record(&myLog, "String three.");
+	datalog_add_record(&myLog, "string one");
+	datalog_add_record(&myLog, "string two");
+	datalog_add_record(&myLog, "string four");
 
-	datalog_insert_record(&myLog, 2, "This is an inserted record.");
+	datalog_insert_record(&myLog, 2, "string three");
 
 	uint32_t i;
 	for (i = 0; i < myLog.numRecords; i++)
