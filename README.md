@@ -1,4 +1,4 @@
-simple-log
+Simple-Log
 ==========
 
 A simple char * based data log for embedded devices written in C.
