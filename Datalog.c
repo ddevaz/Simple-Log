@@ -80,8 +80,8 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	// same as adding a record.
 	if (recordIndex == numRecords)
 	{
-			datalog_add_record(log, record);
-			return;
+		datalog_add_record(log, record);
+		return;
 	}
 
 
