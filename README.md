@@ -6,7 +6,10 @@ Simple log is designed to work with embedded systems so the library does not use
 
 **Example Usage**
 ```C
+#include <stdio.h>
+#include <stdint.h>
 #include "Datalog.h"
+
 
 
 int main()
