@@ -5,7 +5,7 @@ A simple char * based data log for embedded devices written in C.
 Simple log is designed to work with embedded systems so the library does not use dynamic memory allocation.
 
 **Example Usage**
-```
+```C
 #include "Datalog.h"
 
 
