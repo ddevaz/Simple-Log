@@ -14,11 +14,6 @@ int main()
 	datalog_add_record(&myLog, "4");
 
 	int j;
-        for (j=0; j < myLog.usedBytes; j++)
-        {
-                printf("j:%d : %X\n", j, myLog.data[j]);
-        }
-        datalog_delete_record(&myLog, 1);
 
 
 	datalog_insert_record(&myLog, 2, "3");
