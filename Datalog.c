@@ -16,7 +16,7 @@
 // library includes
 #include "Datalog.h"
 
-
+#include <stdio.h>
 
 // Private Prototypes
 static bool datalog_has_free_bytes(Datalog_t * log, const uint32_t numBytes);
@@ -69,7 +69,12 @@ void datalog_add_record(Datalog_t * log, const char * record)
 
 void datalog_delete_record(Datalog_t * log, const uint32_t recordIndex)
 {
-	assert("Record Index out of bounds" && recordIndex > log->numRecords);
+	assert("Record Index out of bounds" && recordIndex < log->numRecords);
+	char *dataEndIndex = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords-1]) + 1;
+	char *dataStartIndex = log->indeces[recordIndex];
+	uint32_t  numberOfBytesToMove = dataEndIndex - dataStartIndex;
+	printf("number of bytes to move: %u\n countbytes:%u\n", numberOfBytesToMove, count_bytes(log->indeces[recordIndex]));
+
 }
 
 
@@ -104,7 +109,7 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	}
 
 	log->numRecords += 1;
-	log->usedBytes += 1;
+	log->usedBytes += recordLength;
 }
 
 
