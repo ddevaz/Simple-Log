@@ -96,7 +96,7 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	}
 
 	log->numRecords += 1;
-	log->usedBytes += 1;
+	log->usedBytes += recordLength;
 }
 
 
