@@ -33,6 +33,8 @@ void datalog_init(Datalog_t * log)
 {
 	assert("datalog can't be NULL." && log != NULL );
 	memset(log->data, 0x00, DATALOG_MAX_BYTES);
+	int i;
+	for (i = 0; i < DATALOG_MAX_BYTES; i++) log->indeces[i] = NULL;
 	log->indeces[0] = &log->data[0];
 	log->numRecords = 0;
 	log->usedBytes = 0;
@@ -72,11 +74,32 @@ void datalog_add_record(Datalog_t * log, const char * record)
 void datalog_delete_record(Datalog_t * log, const uint32_t recordIndex)
 {
 	assert("Record Index out of bounds" && recordIndex < log->numRecords);
-	char *dataEndIndex = log->indeces[log->numRecords - 1] + strlen(log->indeces[log->numRecords-1]) + 1;
-	char *dataStartIndex = log->indeces[recordIndex];
-	uint32_t  numberOfBytesToMove = dataEndIndex - dataStartIndex;
-	printf("number of bytes to move: %u\n countbytes:%u\n", numberOfBytesToMove, count_bytes(log->indeces[recordIndex]));
+	uint32_t numBytes = strlen(log->indeces[recordIndex]) + 1;
+	bool isLastRecord = recordIndex == log->numRecords - 1;
+	if (isLastRecord){
+		// just memset to clear last record.
+		memset(log->indeces[recordIndex], 0x00, numBytes);
+	}
+	else
+	{
+		uint32_t numberOfBytesToMove = datalog_num_bytes_from_index(log, recordIndex + 1);
+		// copy over the record to be deleted.
+		memcpy(log->indeces[recordIndex], log->indeces[recordIndex + 1], numberOfBytesToMove);
+		// zero out the last record which is no longer used.
+		memset(log->indeces[log->numRecords-1], 0x00, numBytes);
+		// adjust the pointers so they point to the correct strings.
+		uint32_t j;
+		for (j = recordIndex + 1; j < log->numRecords; j++)
+		{
+			log->indeces[j] = log->indeces[j-1] + strlen(log->indeces[j-1]) + 1;
+		}
+	}
 
+	// null the last pointer since it points to nothing.
+	log->indeces[log->numRecords-1] = NULL;
+	// update state vars.
+	log->usedBytes -= numBytes;
+	log->numRecords -= 1;
 }
 
 
@@ -88,7 +111,7 @@ void datalog_insert_record(Datalog_t * log, uint32_t recordIndex, char record[])
 	// perform checks.
 	assert( "Adding record must not exceed free space."
                && datalog_has_free_bytes(log, recordIndex) );
-        assert( "Adding record must not exceed max number of records"
+    assert( "Adding record must not exceed max number of records"
                && !datalog_is_max_records_used(log) );
 
 	// inserting a record at the end is the
@@ -154,6 +177,15 @@ static uint32_t count_bytes(char data[])
 	}
 
 	return bytesCount;
+}
+
+// returns the number of bytes used starting from the recordIndex.
+static uint32_t datalog_num_bytes_from_index(const Datalog_t * log, const uint32_t recordIndex)
+{
+	assert("Record Index out of bounds" && recordIndex < log->numRecords);
+	const char *dataEndIndex = &log->data[log->usedBytes];
+	const char *dataStartIndex = log->indeces[recordIndex];
+	return dataEndIndex - dataStartIndex;
 }
 
 
