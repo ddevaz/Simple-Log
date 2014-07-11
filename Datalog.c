@@ -25,6 +25,8 @@ static bool datalog_is_max_records_used(Datalog_t * log);
 
 static uint32_t count_bytes(char data[]);
 
+static uint32_t datalog_num_bytes_from_index(const Datalog_t * log, const uint32_t recordIndex);
+
 
 
 void datalog_init(Datalog_t * log)
